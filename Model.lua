@@ -41,6 +41,10 @@ function Addon.Progress(challenge, context)
         result.source = 'criteria'
         return result
     end
+    if c and c.completed and #criteria == 1 then
+        result.fraction, result.units, result.remaining, result.source = 1, 0, 'Complete', 'criteria'
+        return result
+    end
     if c and not c.completed and c.text then result.missing[1] = c.text end
     local text = (c and c.text or '') .. ' ' .. (challenge.description or '') .. ' ' .. (challenge.name or '')
     if context.classCategory and challenge.category == context.classCategory
@@ -50,7 +54,7 @@ function Addon.Progress(challenge, context)
             local value = context.level + ((context.xpMax or 0) > 0 and (context.xp or 0) / context.xpMax or 0)
             result.fraction = clamp(value / level)
             result.units = math.max(0, level - value)
-            result.remaining = string.format('%.1f levels to go', result.units)
+            result.remaining = result.units > 0 and string.format('%.1f levels to go', result.units) or 'Level reached'
             result.source = 'live'
             return result
         end
@@ -69,7 +73,7 @@ function Addon.Progress(challenge, context)
         if found and type(found.rank) == 'number' and type(found.maxRank) == 'number' then
             result.fraction = clamp(found.rank / required)
             result.units = math.max(0, required - found.rank)
-            result.remaining = found.rank .. '/' .. required .. ' skill' .. (found.maxRank < required and ' (train next rank)' or '')
+            result.remaining = math.min(found.rank, required) .. '/' .. required .. ' skill' .. (found.maxRank < required and ' (train next rank)' or '')
             result.source = 'live'
         end
     end
@@ -80,14 +84,16 @@ end
 -- already-banked (completed account-wide) challenges show nothing.
 function Addon.PointsLabel(points, completed)
     if completed or type(points) ~= 'number' or points <= 0 then return '' end
-    if points == 1 then return '  |  Awards Point' end
-    return '  |  Awards ' .. points .. ' Points'
+    if points == 1 then return 'Awards Point' end
+    return 'Awards ' .. points .. ' Points'
 end
 
 function Addon.Rank(records, showCompleted, showZero, limit)
     local result = {}
     for _, r in ipairs(records) do
-        if (showCompleted or not r.completed) and (showZero or r.fraction == nil or r.fraction > 0) then
+        -- Earned by this character: nothing left to do. Earned elsewhere: shown only on request.
+        local visible = not r.completed or (showCompleted and r.earnedByMe ~= true)
+        if visible and (showZero or r.fraction == nil or r.fraction > 0) then
             result[#result + 1] = r
         end
     end

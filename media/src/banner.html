@@ -1,0 +1,58 @@
+<!doctype html>
+<!-- KwikLegacy banner. Render: chromium --headless --hide-scrollbars --window-size=1280,640
+     --force-device-scale-factor=2 --screenshot=banner.png banner.html
+     then save banner.png as ../banner.jpg (JPEG quality 90) and a 1280x640 PNG as ../social-preview.png -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>KwikLegacy banner</title>
+<style>
+  @font-face { font-family: 'Cinzel'; src: url('fonts/Cinzel-Variable.ttf') format('truetype'); font-weight: 400 900; }
+  @font-face { font-family: 'Alegreya Sans'; src: url('fonts/AlegreyaSans-Regular.ttf') format('truetype'); font-weight: 400; }
+  @font-face { font-family: 'Alegreya Sans'; src: url('fonts/AlegreyaSans-Medium.ttf') format('truetype'); font-weight: 500; }
+  :root {
+    --ink: #12141a;
+    --gold: #f7c84f;
+    --gold-deep: #d99a32;
+    --tan: #d2b48c;
+    --parchment: #f3e9d2;
+    --muted: #cfc4ab;
+  }
+  * { margin: 0; box-sizing: border-box; }
+  html, body { width: 1280px; height: 640px; overflow: hidden; background: var(--ink); }
+  body {
+    position: relative;
+    font-family: 'Alegreya Sans', sans-serif;
+    color: var(--parchment);
+    background:
+      radial-gradient(ellipse 620px 520px at 900px 330px, rgba(217,154,50,0.16), transparent 70%),
+      radial-gradient(ellipse 900px 700px at 300px 320px, #1e2230, var(--ink) 75%);
+  }
+  .grain { position: absolute; inset: 0; opacity: 0.5; }
+  .copy { position: absolute; left: 88px; top: 0; bottom: 0; width: 600px; display: flex; flex-direction: column; justify-content: center; }
+  .mark { width: 168px; height: 168px; margin: 0 0 14px -14px; filter: drop-shadow(0 10px 22px rgba(0,0,0,0.55)); }
+  h1 { font-family: 'Cinzel', serif; font-weight: 700; font-size: 82px; line-height: 0.95; letter-spacing: 0.01em; }
+  h1 .kwik { color: var(--gold); }
+  h1 .legacy { color: var(--tan); }
+  .tagline { margin-top: 22px; font-size: 33px; line-height: 1.22; font-weight: 500; max-width: 520px; text-wrap: pretty; }
+  .meta { margin-top: 26px; font-size: 23px; color: var(--muted); letter-spacing: 0.02em; }
+  .meta b { color: var(--gold-deep); font-weight: 500; }
+  .shot { position: absolute; right: 96px; top: 50%; transform: translateY(-50%); height: 596px;
+          filter: drop-shadow(0 24px 40px rgba(0,0,0,0.7)); }
+</style>
+</head>
+<body>
+  <svg class="grain" width="1280" height="640" aria-hidden="true">
+    <filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="3"/>
+      <feColorMatrix values="0 0 0 0 0.3  0 0 0 0 0.34  0 0 0 0 0.4  0 0 0 0.18 0"/></filter>
+    <rect width="100%" height="100%" filter="url(#n)"/>
+  </svg>
+  <main class="copy">
+    <img class="mark" src="../kwiklegacy-mark.svg" alt="">
+    <h1><span class="kwik">Kwik</span><span class="legacy">Legacy</span></h1>
+    <p class="tagline">See the Legacy challenges you're closest to unlocking.</p>
+    <p class="meta">A <b>WoW Forever</b> addon &nbsp;·&nbsp; free and open source</p>
+  </main>
+  <img class="shot" src="../screenshots/panel.png" alt="Closest unlocks panel">
+</body>
+</html>

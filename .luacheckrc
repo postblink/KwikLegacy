@@ -1,3 +1,4 @@
+exclude_files = {'media/**'}
 std = 'lua51'
 max_line_length = 350
 read_globals = {

@@ -1,0 +1,5 @@
+SlashCmdList.KWIKLEGACY('rows 6')
+ShowcaseRefresh()
+local r = assert(ShowcaseRow('Experienced Spelunker'), 'row missing')
+r:GetScript('OnEnter')(r)
+print('SHOWCASE_OK tooltip lines=' .. GameTooltip:NumLines())

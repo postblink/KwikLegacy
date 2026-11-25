@@ -3,6 +3,8 @@ package-as: KwikLegacy
 ignore:
   - tests
   - .luacheckrc
+  - media
+  - docs
 
 manual-changelog:
   filename: CHANGELOG.md

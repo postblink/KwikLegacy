@@ -9,7 +9,8 @@ import tempfile
 root = pathlib.Path(__file__).resolve().parent.parent
 source = (root / 'Model.lua').read_text()
 mutations = [
-    ('completed filter', 'showCompleted or not r.completed', 'true'),
+    ('completed filter', 'not r.completed or (showCompleted and r.earnedByMe ~= true)', 'true'),
+    ('own earned hidden', 'r.earnedByMe ~= true', 'true'),
     ('zero filter', 'showZero or r.fraction == nil or r.fraction > 0', 'true'),
     ('unknown last', 'if b.fraction == nil then return true end', 'if b.fraction == nil then return false end'),
     ('descending progress', 'return a.fraction > b.fraction', 'return a.fraction < b.fraction'),

@@ -2,7 +2,7 @@
 ## Title: |cFFFFD100Kwik|r|cFFD2B48CLegacy|r
 ## Notes: Shows the Legacy challenges you are closest to unlocking. Feedback: https://github.com/postblink/KwikLegacy/issues
 ## Author: Lucas Boyles
-## Version: 0.1.0-alpha.1
+## Version: 0.1.0-alpha.2
 ## X-License: GPL-3.0-or-later
 ## X-Website: https://github.com/postblink/KwikLegacy
 ## SavedVariables: KwikLegacyDB

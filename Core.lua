@@ -108,7 +108,10 @@ local function makeRow(parent, index)
     row.icon=row:CreateTexture(nil,'ARTWORK'); row.icon:SetSize(30,30); row.icon:SetPoint('TOPLEFT')
     row.name=row:CreateFontString(nil,'OVERLAY','GameFontNormalSmall'); row.name:SetPoint('TOPLEFT',row.icon,'TOPRIGHT',5,0); row.name:SetWidth(220); row.name:SetJustifyH('LEFT')
     row.detail=row:CreateFontString(nil,'OVERLAY','GameFontHighlightSmall'); row.detail:SetPoint('TOPLEFT',row.name,'BOTTOMLEFT',0,-5); row.detail:SetWidth(220); row.detail:SetJustifyH('LEFT')
-    row.bar=CreateFrame('StatusBar',nil,row); row.bar:SetPoint('TOPLEFT',row,'TOPLEFT',35,-43); row.bar:SetSize(215,7); row.bar:SetStatusBarTexture('Interface\\TargetingFrame\\UI-StatusBar'); row.bar:SetMinMaxValues(0,1); row.bar:SetStatusBarColor(0.82,0.62,0.25)
+    if row.detail.SetWordWrap then row.detail:SetWordWrap(false) end -- one line; the tooltip lists everything
+    row.bar=CreateFrame('StatusBar',nil,row); row.bar:SetPoint('TOPLEFT',row,'TOPLEFT',35,-43); row.bar:SetSize(150,7); row.bar:SetStatusBarTexture('Interface\\TargetingFrame\\UI-StatusBar'); row.bar:SetMinMaxValues(0,1); row.bar:SetStatusBarColor(0.82,0.62,0.25)
+    local track=row.bar:CreateTexture(nil,'BACKGROUND'); track:SetAllPoints(); track:SetColorTexture(0,0,0,0.55) -- shows the unfilled part
+    row.points=row:CreateFontString(nil,'OVERLAY','GameFontNormalSmall'); row.points:SetPoint('LEFT',row.bar,'RIGHT',6,0); row.points:SetJustifyH('LEFT'); row.points:SetTextColor(0.4,0.9,0.4)
     row:SetScript('OnClick',function(self) if self.record and type(ShowLegacyChallenge)=='function' then ShowLegacyChallenge(self.record.id) end end)
     row:SetScript('OnEnter',function(self)
         if not self.record or not GameTooltip then return end
@@ -129,7 +132,7 @@ local function refresh()
             local earned = r.completed and (r.earnedByMe == false and ' (earned elsewhere)' or
                 (r.earnedByMe == nil and ' (earned; character unknown)' or ' (earned)')) or ''
             row.record=r; row.icon:SetTexture(r.icon); row.name:SetText(r.name .. (r.source=='live' and ' ~' or '') .. earned)
-            row.detail:SetText(r.remaining .. Addon.PointsLabel(r.points, r.completed))
+            row.detail:SetText(r.remaining); row.points:SetText(Addon.PointsLabel(r.points, r.completed))
             if r.fraction then row.bar:SetValue(r.fraction); row.bar:Show() else row.bar:Hide() end
             row:Show()
         else row.record=nil; row:Hide() end

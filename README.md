@@ -1,25 +1,35 @@
 # KwikLegacy
 
+![KwikLegacy: see the Legacy challenges you're closest to unlocking](media/banner.jpg)
+
 A World of Warcraft: Forever addon that adds a **Closest unlocks** panel to the Legacy System window. It ranks the Legacy challenges you're closest to finishing on your current character and shows what's left on each one.
 
 > **Public alpha.** KwikLegacy is built against Blizzard's Forever UI source and is tested offline with simulated game data. It hasn't been checked against every challenge on a live client yet, so some progress may show as unknown or be estimated. Please [report anything that looks wrong](https://github.com/postblink/KwikLegacy/issues).
 
 ## What it shows
 
-Open the Legacy System window, or type `/kl`. The panel docks to the right of the window and lists your nearest unlocks, for example:
+Open the Legacy System window, or type `/kl`. The panel docks to the right of the window and lists your nearest unlocks:
 
-- **Novice Spelunker:** 5/6, missing Shadowfang Keep
-- **Artisan Tailor:** 288/300 skill (train next rank)
-- **Experienced Druid:** 1.4 levels to go
+![The Closest unlocks panel docked beside Blizzard's Legacy Challenges window](media/screenshots/overview.png)
 
-Each row has a progress bar and its remaining steps. **Awards Point** marks challenges that would give you a new Legacy Point. Hover over a row to see every missing criterion, or click it to open that challenge in Blizzard's panel. Click the panel heading to collapse or expand it.
+As you progress, the list re-ranks itself. Skill-ups move a profession up, and a finished challenge drops off:
+
+<p align="center"><img src="media/kwiklegacy-demo.gif" width="360" alt="The panel re-ranking as Tailoring skill rises and dungeons are cleared"></p>
+
+Each row has a progress bar and its remaining steps, for example "5/6, missing Shadowfang Keep", "288/300 skill (train next rank)" or "1.4 levels to go". **Awards Point** marks challenges that would give you a new Legacy Point. Hover over a row to see every missing criterion, or click it to open that challenge in Blizzard's panel. Click the panel heading to collapse or expand it.
 
 How the list is ordered:
 
 - Closest to complete comes first. Ties go to the challenge with fewer steps left.
 - Challenges whose progress can't be measured go last. They're never shown as 0%.
-- Hidden by default: challenges at 0%, and challenges already completed on another character. Legacy Points are account-wide, so finishing those again doesn't award anything.
+- Hidden by default: challenges at 0%, and challenges already completed on another character. Legacy Points are account-wide, so finishing those again doesn't award anything. Challenges this character has already earned never appear.
 - A `~` after a name means the progress is a live estimate from your character's level or profession skill, because the game doesn't report a number for that challenge.
+
+| Hover for every missing criterion | `/kl earned` and `/kl rows 8` |
+| --- | --- |
+| ![Tooltip listing the three dungeons still missing from Experienced Spelunker](media/screenshots/tooltip.png) | ![Eight rows, including a challenge earned on another character](media/screenshots/earned-elsewhere.png) |
+
+The screenshots and animation are rendered with [wow-ui-sim](https://github.com/Osso/wow-ui-sim), a WoW UI simulator. It runs Blizzard's Forever interface from a local client, and here it also runs KwikLegacy's unmodified code. The character and its progress are synthetic, so these aren't captures from a live game. To render them again, see [`media/src/showcase`](media/src/showcase/render.sh).
 
 ## Install
 
@@ -83,6 +93,14 @@ The smoke harness loads every file in the `.toc` and exercises both load orders 
 
 The design was checked against Blizzard's Forever UI source ([Gethe/wow-ui-source](https://github.com/Gethe/wow-ui-source), `forever` branch, build 71037) and a generated [API reference](https://atraeau.github.io/WoW-Addons/api.json) for interface 16001.
 
+### Media
+
+Everything in `media/` is generated from sources in `media/src`:
+
+- `python3 media/src/make_icon.py` writes the icon and transparent mark as SVG.
+- `media/src/showcase/render.sh` renders the screenshots and the demo GIF in wow-ui-sim. It needs `WOW_DIR` (a WoW Forever install, mounted read-only) and `SIM_DIR` (the simulator's Forever release).
+- To build the banner, render `media/src/banner.html` with headless Chromium. The command is in the file's header.
+
 ## License
 
-[GPL-3.0-or-later](LICENSE)
+KwikLegacy is licensed under [GPL-3.0-or-later](LICENSE). The banner fonts in `media/src/fonts` are Cinzel and Alegreya Sans, both under the SIL Open Font License. Their license texts are in the same folder.

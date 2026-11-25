@@ -84,7 +84,7 @@ assert(addon.panel:IsShown(), 'panel did not follow parent')
 local row
 for _,f in ipairs(allFrames) do if f.record then row=f; break end end
 assert(row and row.record.id==11, 'row missing')
-assert(row.detail.text:find('Awards Point',1,true) and not row.detail.text:find('pts',1,true), 'points label')
+assert(row.points.text=='Awards Point' and not row.detail.text:find('Awards',1,true), 'points label')
 row.scripts.OnClick(row); assert(clicked==11, 'row click not routed')
 row.scripts.OnEnter(row); assert(tooltipLines[2]=='Reach level 45', 'missing tooltip criteria')
 row.scripts.OnLeave(row)
@@ -92,7 +92,7 @@ completed=true; fire('ACHIEVEMENT_EARNED'); addon.panel.scripts.OnUpdate(addon.p
 assert(not row:IsShown(), 'completed record not hidden')
 SlashCmdList.KWIKLEGACY('earned'); addon.panel.scripts.OnUpdate(addon.panel,.5)
 assert(row:IsShown() and row.name.text:find('earned elsewhere',1,true), 'earned elsewhere not labelled')
-assert(not row.detail.text:find('Awards',1,true), 'banked challenge must not claim a point')
+assert(row.points.text=='', 'banked challenge must not claim a point')
 local before=reads
 fire('PLAYER_XP_UPDATE'); addon.panel.scripts.OnUpdate(addon.panel,.2); assert(reads==before, 'throttle')
 addon.panel.scripts.OnUpdate(addon.panel,.3); assert(reads==before+1, 'refresh timer')
