@@ -1,0 +1,33 @@
+name: Test
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          persist-credentials: false
+      - name: Install Lua 5.1 and luacheck
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes --no-install-recommends lua5.1 lua-check
+      - name: Syntax
+        run: for f in ./*.lua ./tests/*.lua; do luac5.1 -p "$f" || exit 1; done
+      - name: Lint
+        run: luacheck --no-color .
+      - name: Model and full-TOC lifecycle tests
+        run: |
+          lua5.1 tests/model.lua
+          lua5.1 tests/load_smoke.lua
+          lua5.1 tests/load_smoke.lua already
+      - name: Mutation checks
+        run: python3 tests/mutations.py

@@ -1,0 +1,9 @@
+package-as: KwikLegacy
+
+ignore:
+  - tests
+  - .luacheckrc
+
+manual-changelog:
+  filename: CHANGELOG.md
+  markup-type: markdown

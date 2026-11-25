@@ -1,0 +1,8 @@
+.DS_Store
+Thumbs.db
+.vscode/
+*.swp
+__pycache__/
+*.pyc
+.release/
+dist/
